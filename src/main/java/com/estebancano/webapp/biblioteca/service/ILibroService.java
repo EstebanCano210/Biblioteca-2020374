@@ -8,7 +8,7 @@ public interface ILibroService {
 
     public List<Libro> listarLibros();
 
-    public Libro buscaLibroPorId(Long id);
+    public Libro buscarLibroPorId(Long id);
 
     public Libro guardarLibro(Libro libro);
 

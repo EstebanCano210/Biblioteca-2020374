@@ -20,7 +20,7 @@ public class LibroService implements ILibroService{
     }
 
     @Override
-    public Libro buscaLibroPorId(Long id) {
+    public Libro buscarLibroPorId(Long id) {
        return libroRepository.findById(id).orElse(null);
     }
 
