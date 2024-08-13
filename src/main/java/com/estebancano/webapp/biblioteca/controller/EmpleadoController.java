@@ -46,14 +46,22 @@ public class EmpleadoController {
 
     //Agregar
     @PostMapping("/")
-    public ResponseEntity<Map<String, Boolean>> agregarEmpleado(@RequestBody Empleado empleado){
-        Map<String, Boolean> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>> agregarEmpleado(@RequestBody Empleado empleado){
+        Map<String, String> response = new HashMap<>();
         try{
-            empleadoService.guardarEmpleado(empleado);
-            response.put("Empleado agregado con exito", Boolean.TRUE);
-            return ResponseEntity.ok(response);
+            if(!empleadoService.verificarDpiDuplicado(empleado)){
+                empleadoService.guardarEmpleado(empleado);
+                response.put("Message","Empleado agregado con exito");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "Error");
+                response.put("err", "Hubo un error al intentar modificar el cliente");
+                return ResponseEntity.badRequest().body(response);
+
+            }
         }catch(Exception e){
-            response.put("Empleado agregado con exito", Boolean.FALSE);
+            response.put("message", "Error");
+            response.put("err", "Hubo un error al intentar modificar el cliente");
             return ResponseEntity.badRequest().body(response);
         }
     }

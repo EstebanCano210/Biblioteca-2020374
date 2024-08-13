@@ -49,11 +49,16 @@ public class CategoriaController {
     public ResponseEntity<Map<String, Boolean>> agregarCategoria(@RequestBody Categoria categoria){
         Map<String, Boolean> response = new HashMap<>();
         try{
-            categoriaService.guardarCategoria(categoria);
-            response.put("Categoria creada con exito", Boolean.TRUE);
-            return ResponseEntity.ok(response);
+            if (!categoriaService.verificarCategoriaDuplicada(categoria)) {
+                categoriaService.guardarCategoria(categoria);
+                response.put("Categoria creada con exito", Boolean.TRUE);
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("Esta Categoria ya ha sido creada", Boolean.FALSE);
+                return ResponseEntity.badRequest().body(response);
+            }
         }catch(Exception e){
-            response.put("Categoria creada con exito", Boolean.FALSE);
+            response.put("No se ha creado la categoria" , Boolean.FALSE);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -64,11 +69,13 @@ public class CategoriaController {
         Map<String, String> response = new HashMap<>();
         
         try {
-            Categoria categoriaVieja = categoriaService.buscarCategoriaPorId(id);    
-            categoriaVieja.setNombreCategoria(categoriaNueva.getNombreCategoria());
-            categoriaService.guardarCategoria(categoriaVieja);
-            response.put("message", "La categoria se ha modificado con exito");
-            return ResponseEntity.ok(response);
+            
+                Categoria categoriaVieja = categoriaService.buscarCategoriaPorId(id);    
+                categoriaVieja.setNombreCategoria(categoriaNueva.getNombreCategoria());
+                categoriaService.guardarCategoria(categoriaVieja);
+                response.put("message", "La categoria se ha modificado con exito");
+                return ResponseEntity.ok(response);
+            
         } catch (Exception e) {
             response.put("message", "Error");
             response.put("err", "Hubo un error al intentar modificar la categoria");

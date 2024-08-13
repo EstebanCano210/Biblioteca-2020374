@@ -62,9 +62,9 @@ public class LibroController {
         }
     }
 
-    // EDITAR LIBROS
+    // Editar
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Boolean>> editarLibro(@PathVariable Long id, Libro libroNuevo){
+    public ResponseEntity<Map<String, Boolean>> editarLibro(@PathVariable Long id,  @RequestBody Libro libroNuevo){
         Map<String, Boolean> response = new HashMap<>();
         try {
             Libro libroViejo = libroService.buscarLibroPorId(id);
@@ -77,6 +77,7 @@ public class LibroController {
             libroViejo.setNumeroEstanteria(libroNuevo.getNumeroEstanteria());
             libroViejo.setCluster(libroNuevo.getCluster());
             libroViejo.setCategoria(libroNuevo.getCategoria());
+            libroService.guardarLibro(libroViejo);
             response.put("La edición del Libro ha sido Exitosa", Boolean.TRUE);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
