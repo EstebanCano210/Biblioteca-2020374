@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.estebancano.webapp.biblioteca.service.CategoriaService;
 @Controller
 @RestController
 @RequestMapping("categoria")
+@CrossOrigin(value = "http://127.0.0.1:5500")//permite la conexion a otro servidor
 public class CategoriaController {
 
     @Autowired
@@ -34,7 +36,7 @@ public class CategoriaController {
     }
 
     //Buscar
-    @GetMapping("/id={id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Categoria> buscarCategoriaPorId(@PathVariable Long id){
         try {
             Categoria categoria = categoriaService.buscarCategoriaPorId(id);
